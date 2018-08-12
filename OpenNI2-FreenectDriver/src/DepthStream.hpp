@@ -171,12 +171,20 @@ namespace FreenectDriver
           *(static_cast<unsigned long long*>(data)) = SHIFT_SCALE_VAL;
           return ONI_STATUS_OK;
         case XN_STREAM_PROPERTY_ZERO_PLANE_DISTANCE:    // unsigned long long
-          if (*pDataSize != sizeof(unsigned long long))
+          if (*pDataSize != sizeof(unsigned long long) && *pDataSize != sizeof(unsigned int))
           {
             LogError("Unexpected size for XN_STREAM_PROPERTY_ZERO_PLANE_DISTANCE");
             return ONI_STATUS_ERROR;
           }
-          *(static_cast<unsigned long long*>(data)) = ZERO_PLANE_DISTANCE_VAL;
+          else 
+          {
+            if (*pDataSize != sizeof(unsigned long long)) 
+            {
+              *(static_cast<unsigned long long*>(data)) = ZERO_PLANE_DISTANCE_VAL;
+            } else {
+              *(static_cast<unsigned int*>(data)) = (unsigned int) ZERO_PLANE_DISTANCE_VAL;
+            }
+          }
           return ONI_STATUS_OK;
         case XN_STREAM_PROPERTY_ZERO_PLANE_PIXEL_SIZE:  // double
           if (*pDataSize != sizeof(double))
